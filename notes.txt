@@ -1,0 +1,3 @@
+for flask
+1. templates/chat.html
+2. static/style.css
