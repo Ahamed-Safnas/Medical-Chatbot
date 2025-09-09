@@ -1,130 +1,191 @@
-# Build-a-Complete-Medical-Chatbot-with-LLMs-LangChain-Pinecone-Flask-AWS
+# Medical Chatbot with LLMs, LangChain, Pinecone, Flask, and Gemini API
 
-# How to run?
-### STEPS:
+A complete end-to-end **Medical Chatbot** built using **Google Gemini API**, **LangChain**, **Pinecone**, and **Flask**. The chatbot retrieves relevant medical information from PDFs, processes queries using Retrieval-Augmented Generation (RAG), and responds in real-time via a clean chat interface.
 
-Clone the repository
+---
+
+## Features
+
+* **Flask Web App** with interactive chat UI.
+* **Gemini API** for natural language responses.
+* **Pinecone** for vector database and semantic search.
+* **LangChain** for chaining prompts and retrieval.
+* **PDF ingestion** and automatic embedding storage.
+* **Docker-ready** for deployment.
+* **AWS CI/CD support** using GitHub Actions.
+
+---
+
+## Directory Structure
+
+```
+└── ahamed-safnas-medical-chatbot/
+    ├── README.md
+    ├── app.py
+    ├── LICENSE
+    ├── notes.txt
+    ├── requirements.txt
+    ├── setup.py
+    ├── store_index.py
+    ├── template.sh
+    ├── src/
+    │   ├── __init__.py
+    │   ├── helper.py
+    │   └── prompt.py
+    ├── static/
+    │   └── style.css
+    └── templates/
+        └── chat.html
+```
+
+---
+
+## Setup Instructions
+
+### **Step 1: Clone the Repository**
 
 ```bash
-git clonehttps://github.com/entbappy/Build-a-Complete-Medical-Chatbot-with-LLMs-LangChain-Pinecone-Flask-AWS.git
+git clone https://github.com/Ahamed-Safnas/medical-chatbot-gemini.git
+cd medical-chatbot-gemini
 ```
-### STEP 01- Create a conda environment after opening the repository
+
+### **Step 2: Create a Virtual Environment**
+
+Using Conda:
 
 ```bash
 conda create -n medibot python=3.10 -y
-```
-
-```bash
 conda activate medibot
 ```
 
+Or using `venv`:
 
-### STEP 02- install the requirements
+```bash
+python -m venv venv
+source venv/bin/activate   # On Linux/Mac
+venv\Scripts\activate      # On Windows
+```
+
+### **Step 3: Install Dependencies**
+
 ```bash
 pip install -r requirements.txt
 ```
 
+### **Step 4: Add Environment Variables**
 
-### Create a `.env` file in the root directory and add your Pinecone & openai credentials as follows:
+Create a `.env` file in the project root:
 
 ```ini
-PINECONE_API_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-OPENAI_API_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+PINECONE_API_KEY = "your_pinecone_api_key"
+GEMINI_API_KEY = "your_gemini_api_key"
 ```
 
+> **Note:**
+>
+> * Get your **Gemini API key** from [Google AI Studio](https://aistudio.google.com/).
+> * Get your **Pinecone API key** from [Pinecone](https://www.pinecone.io/).
+
+### **Step 5: Prepare the Data and Store Embeddings**
+
+Make sure your PDFs are placed in a folder named `data/`.
+
+Run the following command to generate embeddings and store them in Pinecone:
 
 ```bash
-# run the following command to store embeddings to pinecone
 python store_index.py
 ```
 
+### **Step 6: Run the Flask App**
+
 ```bash
-# Finally run the following command
 python app.py
 ```
 
-Now,
-```bash
-open up localhost:
+Open your browser and visit:
+
+```
+http://localhost:8080
 ```
 
+---
 
-### Techstack Used:
+## Usage
 
-- Python
-- LangChain
-- Flask
-- GPT
-- Pinecone
+1. Open the chatbot interface.
+2. Ask medical-related questions.
+3. The bot will retrieve relevant context from the Pinecone vector database.
+4. Gemini API will generate a natural language response.
 
+---
 
+## Tech Stack
 
-# AWS-CICD-Deployment-with-Github-Actions
+* **Backend:** Python, Flask
+* **LLM:** Google Gemini API (`gemini-2.5-flash`)
+* **Vector Database:** Pinecone
+* **Data Processing:** LangChain, HuggingFace Transformers
+* **Frontend:** HTML, CSS, Bootstrap, jQuery
 
-## 1. Login to AWS console.
+---
 
-## 2. Create IAM user for deployment
+## Deployment on AWS
 
-	#with specific access
+This project includes AWS CI/CD pipeline support using GitHub Actions.
 
-	1. EC2 access : It is virtual machine
+### Steps:
 
-	2. ECR: Elastic Container registry to save your docker image in aws
+1. **Create IAM User** with the following permissions:
 
+   * `AmazonEC2FullAccess`
+   * `AmazonEC2ContainerRegistryFullAccess`
 
-	#Description: About the deployment
+2. **Setup AWS Services:**
 
-	1. Build docker image of the source code
+   * Create an **ECR Repository** for your Docker images.
+   * Launch an **EC2 Instance** (Ubuntu recommended).
+   * Install Docker on EC2:
 
-	2. Push your docker image to ECR
+     ```bash
+     sudo apt-get update -y
+     sudo apt-get install -y docker.io
+     sudo usermod -aG docker ubuntu
+     newgrp docker
+     ```
 
-	3. Launch Your EC2 
+3. **Configure GitHub Secrets:**
 
-	4. Pull Your image from ECR in EC2
+   * `AWS_ACCESS_KEY_ID`
+   * `AWS_SECRET_ACCESS_KEY`
+   * `AWS_DEFAULT_REGION`
+   * `ECR_REPO`
+   * `PINECONE_API_KEY`
+   * `GEMINI_API_KEY`
 
-	5. Lauch your docker image in EC2
+4. **GitHub Actions** will:
 
-	#Policy:
+   * Build Docker image.
+   * Push image to ECR.
+   * Deploy container to EC2.
 
-	1. AmazonEC2ContainerRegistryFullAccess
+---
 
-	2. AmazonEC2FullAccess
+## Example Query
 
-	
-## 3. Create ECR repo to store/save docker image
-    - Save the URI: 315865595366.dkr.ecr.us-east-1.amazonaws.com/medicalbot
+**User:** "What are the symptoms of diabetes?"
 
-	
-## 4. Create EC2 machine (Ubuntu) 
+**Bot Response:**
+"Common symptoms of diabetes include frequent urination, increased thirst, and unexplained weight loss. It can also cause fatigue and blurred vision."
 
-## 5. Open EC2 and Install docker in EC2 Machine:
-	
-	
-	#optinal
+---
 
-	sudo apt-get update -y
+## License
 
-	sudo apt-get upgrade
-	
-	#required
+This project is licensed under the [Apache License 2.0](LICENSE).
 
-	curl -fsSL https://get.docker.com -o get-docker.sh
+---
 
-	sudo sh get-docker.sh
+## Author
 
-	sudo usermod -aG docker ubuntu
-
-	newgrp docker
-	
-# 6. Configure EC2 as self-hosted runner:
-    setting>actions>runner>new self hosted runner> choose os> then run command one by one
-
-
-# 7. Setup github secrets:
-
-   - AWS_ACCESS_KEY_ID
-   - AWS_SECRET_ACCESS_KEY
-   - AWS_DEFAULT_REGION
-   - ECR_REPO
-   - PINECONE_API_KEY
-   - OPENAI_API_KEY
+**Ahamed Safnas**
+Email: [safnas2042ahamed@gmail.com](mailto:safnas2042ahamed@gmail.com)
