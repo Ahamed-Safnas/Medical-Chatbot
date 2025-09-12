@@ -12,7 +12,6 @@ A complete end-to-end **Medical Chatbot** built using **Google Gemini API**, **L
 * **LangChain** for chaining prompts and retrieval.
 * **PDF ingestion** and automatic embedding storage.
 * **Docker-ready** for deployment.
-* **AWS CI/CD support** using GitHub Actions.
 
 ---
 
