@@ -129,47 +129,6 @@ http://localhost:8080
 
 ---
 
-## Deployment on AWS
-
-This project includes AWS CI/CD pipeline support using GitHub Actions.
-
-### Steps:
-
-1. **Create IAM User** with the following permissions:
-
-   * `AmazonEC2FullAccess`
-   * `AmazonEC2ContainerRegistryFullAccess`
-
-2. **Setup AWS Services:**
-
-   * Create an **ECR Repository** for your Docker images.
-   * Launch an **EC2 Instance** (Ubuntu recommended).
-   * Install Docker on EC2:
-
-     ```bash
-     sudo apt-get update -y
-     sudo apt-get install -y docker.io
-     sudo usermod -aG docker ubuntu
-     newgrp docker
-     ```
-
-3. **Configure GitHub Secrets:**
-
-   * `AWS_ACCESS_KEY_ID`
-   * `AWS_SECRET_ACCESS_KEY`
-   * `AWS_DEFAULT_REGION`
-   * `ECR_REPO`
-   * `PINECONE_API_KEY`
-   * `GEMINI_API_KEY`
-
-4. **GitHub Actions** will:
-
-   * Build Docker image.
-   * Push image to ECR.
-   * Deploy container to EC2.
-
----
-
 ## Example Query
 
 **User:** "What are the symptoms of diabetes?"
