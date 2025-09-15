@@ -1,3 +1,7 @@
 for flask
 1. templates/chat.html
 2. static/style.css
+
+aws console : ECR repo URL
+--> 193801311654.dkr.ecr.eu-north-1.amazonaws.com/medicalbot
+
